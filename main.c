@@ -86,21 +86,66 @@ void drawTile(Tile tile, int x, int y, TileDirection dir) {
 int main(void) {
   const int screenWidth = 800;
   const int screenHeight = 450;
+  int playerx = 150, playery = 150, lastMovement = 0;
+  float sprintTime = 0.0f;
 
   InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
 
   SetTargetFPS(60);
 
   tile_atlas = loadTexture("textures/tile-atlas.png");
-  Tile cement = ((Tile){.x = 16, .y = 16});
+  Tile cement = (Tile){.x = 16, .y = 16};
 
   while (!WindowShouldClose()) {
+
+    if (lastMovement == 0) {
+      sprintTime = 0.0f;
+    }
+    if (IsKeyDown(KEY_A)) {
+      if (IsKeyUp(KEY_D)) {
+        lastMovement = 1;
+      }
+      else {
+        lastMovement = 0;
+      }
+      if (lastMovement == 1 || lastMovement == 0) {
+        sprintTime += GetFrameTime();
+      }
+      else {
+        sprintTime = 0.0f;
+      }
+      if (sprintTime > 0.1f) {
+        playerx -= 4;
+      }
+      playerx -= 2;
+    }
+    if (IsKeyDown(KEY_D)) {
+      if (IsKeyUp(KEY_A)) {
+        lastMovement = 2;
+      }
+      else {
+        lastMovement = 0;
+      }
+      if (lastMovement == 2 || lastMovement == 0) {
+        sprintTime += GetFrameTime();
+      }
+      else {
+        sprintTime = 0.0f;
+      }
+      if (sprintTime > 0.1f) {
+        playerx += 4;
+      }
+      playerx += 2;
+    }
+    if (IsKeyUp(KEY_D) && IsKeyUp(KEY_A)){
+      lastMovement = 0;
+    }
     BeginDrawing();
 
     ClearBackground(RAYWHITE);
     DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
 
-
+    drawTile(cement, playerx, playery, TOP_1);
     drawTile(cement, 0, 0, TOP_1);
     drawTile(cement, 100, 0, TOP_2);
     drawTile(cement, 0, 100, TOP_3);
