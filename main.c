@@ -1,43 +1,60 @@
 #include "raylib.h"
 #include "raylib.h"
-#include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
+// I have honestly no idea how this magic works: https://www.reddit.com/r/C_Programming/comments/1f2rkvt/convert_c_enum_to_its_string_representation/
+// But it makes enums as string, and this is used when printing values in editor
+#define ENUM_GEN(ENUM) ENUM,
+#define STRING_GEN(STRING) #STRING,
+
+#define FOREACH_TILE_DIRECTION_TYPE(TILE_DIRECTION_TYPE) \
+  TILE_DIRECTION_TYPE(VOID)                              \
+  TILE_DIRECTION_TYPE(TOP_1)                             \
+  TILE_DIRECTION_TYPE(TOP_2)                             \
+  TILE_DIRECTION_TYPE(TOP_3)                             \
+  TILE_DIRECTION_TYPE(TOP_4)                             \
+  TILE_DIRECTION_TYPE(BOTTOM_1)                          \
+  TILE_DIRECTION_TYPE(BOTTOM_2)                          \
+  TILE_DIRECTION_TYPE(BOTTOM_3)                          \
+  TILE_DIRECTION_TYPE(BOTTOM_4)                          \
+  TILE_DIRECTION_TYPE(LEFT_1)                            \
+  TILE_DIRECTION_TYPE(LEFT_2)                            \
+  TILE_DIRECTION_TYPE(LEFT_3)                            \
+  TILE_DIRECTION_TYPE(LEFT_4)                            \
+  TILE_DIRECTION_TYPE(RIGHT_1)                           \
+  TILE_DIRECTION_TYPE(RIGHT_2)                           \
+  TILE_DIRECTION_TYPE(RIGHT_3)                           \
+  TILE_DIRECTION_TYPE(RIGHT_4)                           \
+  TILE_DIRECTION_TYPE(CORNER_1)                          \
+  TILE_DIRECTION_TYPE(CORNER_2)                          \
+  TILE_DIRECTION_TYPE(CORNER_3)                          \
+  TILE_DIRECTION_TYPE(CORNER_4)                          \
+  TILE_DIRECTION_TYPE(TILE_TYPE_MAX) 
+
 typedef enum {
-  TOP_1,
-  TOP_2,
-  TOP_3,
-  TOP_4,
-  TOP_5,
-  BOTTOM_1,
-  BOTTOM_2,
-  BOTTOM_3,
-  BOTTOM_4,
-  BOTTOM_5,
-  LEFT_1,
-  LEFT_2,
-  LEFT_3,
-  LEFT_4,
-  LEFT_5,
-  RIGHT_1,
-  RIGHT_2,
-  RIGHT_3,
-  RIGHT_4,
-  RIGHT_5,
-  CORNER_1,
-  CORNER_2,
-  CORNER_3,
-  CORNER_4,
-  CORNER_5,
+    FOREACH_TILE_DIRECTION_TYPE(ENUM_GEN)
 } TileDirection;
+
+const char* tile_direction_strings[] = {
+  FOREACH_TILE_DIRECTION_TYPE(STRING_GEN)
+};
+
+const int TILE_SIZE = 48;
 
 Texture2D tile_atlas;
 typedef struct {
   int x;
   int y;
+  Texture2D texture;
 } Tile;
+
+typedef struct {
+  TileDirection dir;
+  int x;
+  int y;
+} TileInfo;
 
 
 
@@ -55,32 +72,86 @@ Texture2D loadTexture(const char *fileName) {
 }
 
 void drawTexture(Texture texture, int x, int y, int width, int height) {
-  DrawTexturePro(
-    texture, 
-    (Rectangle){.height = texture.height, .width = texture.width, .x = 0, .y = 0},
-    (Rectangle){.height = height, .width = width, .x = x, .y = y},
-    (Vector2){.x = 0, .y = 0},
-    0,
-    WHITE
-  );
+
+  Rectangle source = { .height = texture.height, .width = texture.width, .x = 0, .y = 0 };
+  Rectangle destination = { .height = height, .width = width, .x = x, .y = y };
+  Vector2 origin = { .x = 0, .y = 0 };
+  float rotation = 0;
+  Color tint = WHITE;
+
+  DrawTexturePro(texture, source, destination, origin, rotation, tint);
+
 }
 
-void drawFromTileAtlas(Texture texture, int x, int y, int x2, int y2) {
-  DrawTexturePro(
-    texture, 
-    (Rectangle){.height = 8, .width = 8, .x = x2, .y = y2},
-    (Rectangle){.height = 64, .width = 64, .x = x, .y = y},
-    (Vector2){.x = 0, .y = 0},
-    0,
-    WHITE
-  );
+void drawFromTileAtlas(Tile tile, int alpha, int x, int y, int dx, int dy) {
+
+  Texture2D texture = tile.texture;
+  Rectangle source = { .height = 8, .width = 8, .x = tile.x + dx * 8, .y = tile.y + dy * 8 };
+  Rectangle destination = { .height = TILE_SIZE, .width = TILE_SIZE, .x = x, .y = y };
+  Vector2 origin = {.x = 0, .y = 0};
+  float rotation = 0;
+  Color tint = { .r = 255, .g = 255, .b = 255, .a = alpha };
+
+  DrawTexturePro(texture, source, destination, origin, rotation, tint);
+
 }
 
-void drawTile(Tile tile, int x, int y, TileDirection dir) {
-  if (dir == TOP_1) drawFromTileAtlas(tile_atlas, x, y, tile.x + 0, tile.y + 0);
-  if (dir == TOP_2) drawFromTileAtlas(tile_atlas, x, y, tile.x + 8, tile.y + 0);
-  if (dir == TOP_3) drawFromTileAtlas(tile_atlas, x, y, tile.x + 16, tile.y + 0);
-  if (dir == TOP_4) drawFromTileAtlas(tile_atlas, x, y, tile.x + 24, tile.y + 0);
+void drawTile(Tile tile, int alpha, int x, int y, TileDirection dir) {
+
+  if (dir == TOP_1)    drawFromTileAtlas(tile, alpha, x, y, 0, 0);
+  if (dir == TOP_2)    drawFromTileAtlas(tile, alpha, x, y, 1, 0);
+  if (dir == TOP_3)    drawFromTileAtlas(tile, alpha, x, y, 2, 0);
+  if (dir == TOP_4)    drawFromTileAtlas(tile, alpha, x, y, 3, 0);
+
+  if (dir == BOTTOM_1) drawFromTileAtlas(tile, alpha, x, y, 0, 1);
+  if (dir == BOTTOM_2) drawFromTileAtlas(tile, alpha, x, y, 1, 1);
+  if (dir == BOTTOM_3) drawFromTileAtlas(tile, alpha, x, y, 2, 1);
+  if (dir == BOTTOM_4) drawFromTileAtlas(tile, alpha, x, y, 3, 1);
+
+  if (dir == LEFT_1)   drawFromTileAtlas(tile, alpha, x, y, 0, 2);
+  if (dir == LEFT_2)   drawFromTileAtlas(tile, alpha, x, y, 1, 2);
+  if (dir == LEFT_3)   drawFromTileAtlas(tile, alpha, x, y, 2, 2);
+  if (dir == LEFT_4)   drawFromTileAtlas(tile, alpha, x, y, 3, 2);
+
+  if (dir == RIGHT_1)  drawFromTileAtlas(tile, alpha, x, y, 0, 3);
+  if (dir == RIGHT_2)  drawFromTileAtlas(tile, alpha, x, y, 1, 3);
+  if (dir == RIGHT_3)  drawFromTileAtlas(tile, alpha, x, y, 2, 3);
+  if (dir == RIGHT_4)  drawFromTileAtlas(tile, alpha, x, y, 3, 3);
+
+}
+
+typedef struct {
+  TileInfo *items;
+  size_t count;
+  size_t capacity;
+} Tiles;
+
+#define append(array, value)\
+  do {\
+    if (array.count >= array.capacity) {\
+      if (array.capacity == 0) array.capacity = 256;\
+      else array.capacity *= 2;\
+      array.items = realloc(array.items, array.capacity * sizeof(*array.items));\
+    }\
+    array.items[array.count++] = value;\
+  } while(0)
+
+
+int lastTextureChangeDir = 1;
+TileDirection changeTextureVariation(TileDirection dir) {
+  TileDirection next = dir + lastTextureChangeDir;
+
+  if (next > -1 && tile_direction_strings[dir][0] == tile_direction_strings[next][0]) {
+    return next;
+  }
+
+  lastTextureChangeDir *= -1;
+  next = dir + lastTextureChangeDir;
+  if (next < TILE_TYPE_MAX && tile_direction_strings[dir][0] == tile_direction_strings[next][0]) {
+    return next;
+  }
+
+  return dir;
 }
 
 int main(void) {
@@ -92,19 +163,55 @@ int main(void) {
   SetTargetFPS(60);
 
   tile_atlas = loadTexture("textures/tile-atlas.png");
-  Tile cement = ((Tile){.x = 16, .y = 16});
+  Tile cement = ((Tile){.x = 16, .y = 16, .texture = tile_atlas });
+
+  TileDirection editorDir = TOP_1;
+  Tiles editorTiles = {0};
 
   while (!WindowShouldClose()) {
     BeginDrawing();
 
     ClearBackground(RAYWHITE);
-    DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
 
+    int x = GetMouseX() / TILE_SIZE * TILE_SIZE;
+    int y = GetMouseY() / TILE_SIZE * TILE_SIZE;
+    TileInfo item = {.x = x, .y = y, .dir = editorDir};
 
-    drawTile(cement, 0, 0, TOP_1);
-    drawTile(cement, 100, 0, TOP_2);
-    drawTile(cement, 0, 100, TOP_3);
-    drawTile(cement, 100, 100, TOP_4);
+    int foundIndex = -1;
+    for (int i = 0; i < editorTiles.count; i++) {
+      TileInfo info = editorTiles.items[i];
+      if (item.x == info.x && item.y == info.y) {
+        foundIndex = i;
+      } else {
+        drawTile(cement, 255, info.x, info.y, info.dir);
+      }
+    }
+
+    drawTile(cement, 100, item.x, item.y, item.dir);
+
+    if (IsMouseButtonDown(MOUSE_LEFT_BUTTON)) {
+      if (foundIndex == -1) {
+        append(editorTiles, item);
+      } else {
+        editorTiles.items[foundIndex] = item;
+      }
+      editorDir = changeTextureVariation(editorDir);
+    }
+
+    if (IsKeyPressed(KEY_P)) {
+      for (int i = 0; i < editorTiles.count; i++) {
+        TileInfo info = editorTiles.items[i];
+        if (info.dir != VOID) {
+          printf("drawTile(cement, 255, %d, %d, %s);\n", info.x, info.y, tile_direction_strings[info.dir]);
+        }
+      }
+    }
+
+    else if (IsKeyPressed(KEY_ZERO))  editorDir = VOID;
+    else if (IsKeyPressed(KEY_ONE))   editorDir = TOP_1;
+    else if (IsKeyPressed(KEY_TWO))   editorDir = RIGHT_1;
+    else if (IsKeyPressed(KEY_THREE)) editorDir = BOTTOM_1;
+    else if (IsKeyPressed(KEY_FOUR))  editorDir = LEFT_1;
 
     EndDrawing();
   }
