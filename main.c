@@ -129,55 +129,55 @@ void drawFromTileAtlas(Tile tile, int alpha, int x, int y, int dx, int dy) {
 
 void drawTile(Tile tile, int alpha, int x, int y, TileDirection dir) {
 
-  if (dir == TOP_1)    drawFromTileAtlas(tile, alpha, x, y, 0, 0);
-  if (dir == TOP_2)    drawFromTileAtlas(tile, alpha, x, y, 1, 0);
-  if (dir == TOP_3)    drawFromTileAtlas(tile, alpha, x, y, 2, 0);
-  if (dir == TOP_4)    drawFromTileAtlas(tile, alpha, x, y, 3, 0);
+  if (dir == TOP_1)         drawFromTileAtlas(tile, alpha, x, y, 0, 0);
+  if (dir == TOP_2)         drawFromTileAtlas(tile, alpha, x, y, 1, 0);
+  if (dir == TOP_3)         drawFromTileAtlas(tile, alpha, x, y, 2, 0);
+  if (dir == TOP_4)         drawFromTileAtlas(tile, alpha, x, y, 3, 0);
 
-  if (dir == BOTTOM_1) drawFromTileAtlas(tile, alpha, x, y, 0, 1);
-  if (dir == BOTTOM_2) drawFromTileAtlas(tile, alpha, x, y, 1, 1);
-  if (dir == BOTTOM_3) drawFromTileAtlas(tile, alpha, x, y, 2, 1);
-  if (dir == BOTTOM_4) drawFromTileAtlas(tile, alpha, x, y, 3, 1);
+  if (dir == BOTTOM_1)      drawFromTileAtlas(tile, alpha, x, y, 0, 1);
+  if (dir == BOTTOM_2)      drawFromTileAtlas(tile, alpha, x, y, 1, 1);
+  if (dir == BOTTOM_3)      drawFromTileAtlas(tile, alpha, x, y, 2, 1);
+  if (dir == BOTTOM_4)      drawFromTileAtlas(tile, alpha, x, y, 3, 1);
 
-  if (dir == LEFT_1)   drawFromTileAtlas(tile, alpha, x, y, 0, 2);
-  if (dir == LEFT_2)   drawFromTileAtlas(tile, alpha, x, y, 1, 2);
-  if (dir == LEFT_3)   drawFromTileAtlas(tile, alpha, x, y, 2, 2);
-  if (dir == LEFT_4)   drawFromTileAtlas(tile, alpha, x, y, 3, 2);
+  if (dir == LEFT_1)        drawFromTileAtlas(tile, alpha, x, y, 0, 2);
+  if (dir == LEFT_2)        drawFromTileAtlas(tile, alpha, x, y, 1, 2);
+  if (dir == LEFT_3)        drawFromTileAtlas(tile, alpha, x, y, 2, 2);
+  if (dir == LEFT_4)        drawFromTileAtlas(tile, alpha, x, y, 3, 2);
 
-  if (dir == RIGHT_1)  drawFromTileAtlas(tile, alpha, x, y, 0, 3);
-  if (dir == RIGHT_2)  drawFromTileAtlas(tile, alpha, x, y, 1, 3);
-  if (dir == RIGHT_3)  drawFromTileAtlas(tile, alpha, x, y, 2, 3);
-  if (dir == RIGHT_4)  drawFromTileAtlas(tile, alpha, x, y, 3, 3);
+  if (dir == RIGHT_1)       drawFromTileAtlas(tile, alpha, x, y, 0, 3);
+  if (dir == RIGHT_2)       drawFromTileAtlas(tile, alpha, x, y, 1, 3);
+  if (dir == RIGHT_3)       drawFromTileAtlas(tile, alpha, x, y, 2, 3);
+  if (dir == RIGHT_4)       drawFromTileAtlas(tile, alpha, x, y, 3, 3);
 
   if (dir == HORIZONTAL_1)  drawFromTileAtlas(tile, alpha, x, y, 0, 4);
   if (dir == HORIZONTAL_2)  drawFromTileAtlas(tile, alpha, x, y, 1, 4);
   if (dir == HORIZONTAL_3)  drawFromTileAtlas(tile, alpha, x, y, 2, 4);
   if (dir == HORIZONTAL_4)  drawFromTileAtlas(tile, alpha, x, y, 3, 4);
 
-  if (dir == VERTICAL_1)  drawFromTileAtlas(tile, alpha, x, y, 0, 5);
-  if (dir == VERTICAL_2)  drawFromTileAtlas(tile, alpha, x, y, 1, 5);
-  if (dir == VERTICAL_3)  drawFromTileAtlas(tile, alpha, x, y, 2, 5);
-  if (dir == VERTICAL_4)  drawFromTileAtlas(tile, alpha, x, y, 3, 5);
+  if (dir == VERTICAL_1)    drawFromTileAtlas(tile, alpha, x, y, 0, 5);
+  if (dir == VERTICAL_2)    drawFromTileAtlas(tile, alpha, x, y, 1, 5);
+  if (dir == VERTICAL_3)    drawFromTileAtlas(tile, alpha, x, y, 2, 5);
+  if (dir == VERTICAL_4)    drawFromTileAtlas(tile, alpha, x, y, 3, 5);
 
-  if (dir == TOP_END_1)  drawFromTileAtlas(tile, alpha, x, y, 0, 6);
-  if (dir == TOP_END_2)  drawFromTileAtlas(tile, alpha, x, y, 1, 6);
-  if (dir == TOP_END_3)  drawFromTileAtlas(tile, alpha, x, y, 2, 6);
-  if (dir == TOP_END_4)  drawFromTileAtlas(tile, alpha, x, y, 3, 6);
+  if (dir == TOP_END_1)     drawFromTileAtlas(tile, alpha, x, y, 0, 6);
+  if (dir == TOP_END_2)     drawFromTileAtlas(tile, alpha, x, y, 1, 6);
+  if (dir == TOP_END_3)     drawFromTileAtlas(tile, alpha, x, y, 2, 6);
+  if (dir == TOP_END_4)     drawFromTileAtlas(tile, alpha, x, y, 3, 6);
 
   if (dir == BOTTOM_END_1)  drawFromTileAtlas(tile, alpha, x, y, 0, 7);
   if (dir == BOTTOM_END_2)  drawFromTileAtlas(tile, alpha, x, y, 1, 7);
   if (dir == BOTTOM_END_3)  drawFromTileAtlas(tile, alpha, x, y, 2, 7);
   if (dir == BOTTOM_END_4)  drawFromTileAtlas(tile, alpha, x, y, 3, 7);
 
-  if (dir == LEFT_END_1)  drawFromTileAtlas(tile, alpha, x, y, 0, 8);
-  if (dir == LEFT_END_2)  drawFromTileAtlas(tile, alpha, x, y, 1, 8);
-  if (dir == LEFT_END_3)  drawFromTileAtlas(tile, alpha, x, y, 2, 8);
-  if (dir == LEFT_END_4)  drawFromTileAtlas(tile, alpha, x, y, 3, 8);
+  if (dir == LEFT_END_1)    drawFromTileAtlas(tile, alpha, x, y, 0, 8);
+  if (dir == LEFT_END_2)    drawFromTileAtlas(tile, alpha, x, y, 1, 8);
+  if (dir == LEFT_END_3)    drawFromTileAtlas(tile, alpha, x, y, 2, 8);
+  if (dir == LEFT_END_4)    drawFromTileAtlas(tile, alpha, x, y, 3, 8);
 
-  if (dir == RIGHT_END_1)  drawFromTileAtlas(tile, alpha, x, y, 0, 9);
-  if (dir == RIGHT_END_2)  drawFromTileAtlas(tile, alpha, x, y, 1, 9);
-  if (dir == RIGHT_END_3)  drawFromTileAtlas(tile, alpha, x, y, 2, 9);
-  if (dir == RIGHT_END_4)  drawFromTileAtlas(tile, alpha, x, y, 3, 9);
+  if (dir == RIGHT_END_1)   drawFromTileAtlas(tile, alpha, x, y, 0, 9);
+  if (dir == RIGHT_END_2)   drawFromTileAtlas(tile, alpha, x, y, 1, 9);
+  if (dir == RIGHT_END_3)   drawFromTileAtlas(tile, alpha, x, y, 2, 9);
+  if (dir == RIGHT_END_4)   drawFromTileAtlas(tile, alpha, x, y, 3, 9);
 
 }
 
