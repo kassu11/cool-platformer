@@ -11,26 +11,57 @@
 
 #define FOREACH_TILE_DIRECTION_TYPE(TILE_DIRECTION_TYPE) \
   TILE_DIRECTION_TYPE(VOID)                              \
+                                                         \
   TILE_DIRECTION_TYPE(TOP_1)                             \
   TILE_DIRECTION_TYPE(TOP_2)                             \
   TILE_DIRECTION_TYPE(TOP_3)                             \
   TILE_DIRECTION_TYPE(TOP_4)                             \
+                                                         \
   TILE_DIRECTION_TYPE(BOTTOM_1)                          \
   TILE_DIRECTION_TYPE(BOTTOM_2)                          \
   TILE_DIRECTION_TYPE(BOTTOM_3)                          \
   TILE_DIRECTION_TYPE(BOTTOM_4)                          \
+                                                         \
   TILE_DIRECTION_TYPE(LEFT_1)                            \
   TILE_DIRECTION_TYPE(LEFT_2)                            \
   TILE_DIRECTION_TYPE(LEFT_3)                            \
   TILE_DIRECTION_TYPE(LEFT_4)                            \
+                                                         \
   TILE_DIRECTION_TYPE(RIGHT_1)                           \
   TILE_DIRECTION_TYPE(RIGHT_2)                           \
   TILE_DIRECTION_TYPE(RIGHT_3)                           \
   TILE_DIRECTION_TYPE(RIGHT_4)                           \
-  TILE_DIRECTION_TYPE(CORNER_1)                          \
-  TILE_DIRECTION_TYPE(CORNER_2)                          \
-  TILE_DIRECTION_TYPE(CORNER_3)                          \
-  TILE_DIRECTION_TYPE(CORNER_4)                          \
+                                                         \
+  TILE_DIRECTION_TYPE(HORIZONTAL_1)                      \
+  TILE_DIRECTION_TYPE(HORIZONTAL_2)                      \
+  TILE_DIRECTION_TYPE(HORIZONTAL_3)                      \
+  TILE_DIRECTION_TYPE(HORIZONTAL_4)                      \
+                                                         \
+  TILE_DIRECTION_TYPE(VERTICAL_1)                        \
+  TILE_DIRECTION_TYPE(VERTICAL_2)                        \
+  TILE_DIRECTION_TYPE(VERTICAL_3)                        \
+  TILE_DIRECTION_TYPE(VERTICAL_4)                        \
+                                                         \
+  TILE_DIRECTION_TYPE(TOP_END_1)                         \
+  TILE_DIRECTION_TYPE(TOP_END_2)                         \
+  TILE_DIRECTION_TYPE(TOP_END_3)                         \
+  TILE_DIRECTION_TYPE(TOP_END_4)                         \
+                                                         \
+  TILE_DIRECTION_TYPE(BOTTOM_END_1)                      \
+  TILE_DIRECTION_TYPE(BOTTOM_END_2)                      \
+  TILE_DIRECTION_TYPE(BOTTOM_END_3)                      \
+  TILE_DIRECTION_TYPE(BOTTOM_END_4)                      \
+                                                         \
+  TILE_DIRECTION_TYPE(LEFT_END_1)                        \
+  TILE_DIRECTION_TYPE(LEFT_END_2)                        \
+  TILE_DIRECTION_TYPE(LEFT_END_3)                        \
+  TILE_DIRECTION_TYPE(LEFT_END_4)                        \
+                                                         \
+  TILE_DIRECTION_TYPE(RIGHT_END_1)                       \
+  TILE_DIRECTION_TYPE(RIGHT_END_2)                       \
+  TILE_DIRECTION_TYPE(RIGHT_END_3)                       \
+  TILE_DIRECTION_TYPE(RIGHT_END_4)                       \
+                                                         \
   TILE_DIRECTION_TYPE(TILE_TYPE_MAX) 
 
 typedef enum {
@@ -118,6 +149,36 @@ void drawTile(Tile tile, int alpha, int x, int y, TileDirection dir) {
   if (dir == RIGHT_3)  drawFromTileAtlas(tile, alpha, x, y, 2, 3);
   if (dir == RIGHT_4)  drawFromTileAtlas(tile, alpha, x, y, 3, 3);
 
+  if (dir == HORIZONTAL_1)  drawFromTileAtlas(tile, alpha, x, y, 0, 4);
+  if (dir == HORIZONTAL_2)  drawFromTileAtlas(tile, alpha, x, y, 1, 4);
+  if (dir == HORIZONTAL_3)  drawFromTileAtlas(tile, alpha, x, y, 2, 4);
+  if (dir == HORIZONTAL_4)  drawFromTileAtlas(tile, alpha, x, y, 3, 4);
+
+  if (dir == VERTICAL_1)  drawFromTileAtlas(tile, alpha, x, y, 0, 5);
+  if (dir == VERTICAL_2)  drawFromTileAtlas(tile, alpha, x, y, 1, 5);
+  if (dir == VERTICAL_3)  drawFromTileAtlas(tile, alpha, x, y, 2, 5);
+  if (dir == VERTICAL_4)  drawFromTileAtlas(tile, alpha, x, y, 3, 5);
+
+  if (dir == TOP_END_1)  drawFromTileAtlas(tile, alpha, x, y, 0, 6);
+  if (dir == TOP_END_2)  drawFromTileAtlas(tile, alpha, x, y, 1, 6);
+  if (dir == TOP_END_3)  drawFromTileAtlas(tile, alpha, x, y, 2, 6);
+  if (dir == TOP_END_4)  drawFromTileAtlas(tile, alpha, x, y, 3, 6);
+
+  if (dir == BOTTOM_END_1)  drawFromTileAtlas(tile, alpha, x, y, 0, 7);
+  if (dir == BOTTOM_END_2)  drawFromTileAtlas(tile, alpha, x, y, 1, 7);
+  if (dir == BOTTOM_END_3)  drawFromTileAtlas(tile, alpha, x, y, 2, 7);
+  if (dir == BOTTOM_END_4)  drawFromTileAtlas(tile, alpha, x, y, 3, 7);
+
+  if (dir == LEFT_END_1)  drawFromTileAtlas(tile, alpha, x, y, 0, 8);
+  if (dir == LEFT_END_2)  drawFromTileAtlas(tile, alpha, x, y, 1, 8);
+  if (dir == LEFT_END_3)  drawFromTileAtlas(tile, alpha, x, y, 2, 8);
+  if (dir == LEFT_END_4)  drawFromTileAtlas(tile, alpha, x, y, 3, 8);
+
+  if (dir == RIGHT_END_1)  drawFromTileAtlas(tile, alpha, x, y, 0, 9);
+  if (dir == RIGHT_END_2)  drawFromTileAtlas(tile, alpha, x, y, 1, 9);
+  if (dir == RIGHT_END_3)  drawFromTileAtlas(tile, alpha, x, y, 2, 9);
+  if (dir == RIGHT_END_4)  drawFromTileAtlas(tile, alpha, x, y, 3, 9);
+
 }
 
 typedef struct {
@@ -149,6 +210,66 @@ TileDirection changeTextureVariation(TileDirection dir) {
   next = dir + lastTextureChangeDir;
   if (next < TILE_TYPE_MAX && tile_direction_strings[dir][0] == tile_direction_strings[next][0]) {
     return next;
+  }
+
+  return dir;
+}
+
+TileDirection rotateTile(TileDirection dir, bool reverseRotation) {
+  switch(dir) {
+    case TOP_1:
+    case TOP_2:
+    case TOP_3:
+    case TOP_4: 
+      return reverseRotation ? LEFT_1 : RIGHT_1;
+    case RIGHT_1:
+    case RIGHT_2:
+    case RIGHT_3:
+    case RIGHT_4: 
+      return reverseRotation ? TOP_1 : BOTTOM_1;
+    case BOTTOM_1:
+    case BOTTOM_2:
+    case BOTTOM_3:
+    case BOTTOM_4: 
+      return reverseRotation ? RIGHT_1 : LEFT_1;
+    case LEFT_1:
+    case LEFT_2:
+    case LEFT_3:
+    case LEFT_4: 
+      return reverseRotation ? BOTTOM_1 : TOP_1;
+    case HORIZONTAL_1:
+    case HORIZONTAL_2:
+    case HORIZONTAL_3:
+    case HORIZONTAL_4: 
+      return VERTICAL_1;
+    case VERTICAL_1:
+    case VERTICAL_2:
+    case VERTICAL_3:
+    case VERTICAL_4: 
+      return HORIZONTAL_1;
+    case TOP_END_1:
+    case TOP_END_2:
+    case TOP_END_3:
+    case TOP_END_4: 
+      return reverseRotation ? LEFT_END_1 : RIGHT_END_1;
+    case RIGHT_END_1:
+    case RIGHT_END_2:
+    case RIGHT_END_3:
+    case RIGHT_END_4: 
+      return reverseRotation ? TOP_END_1 : BOTTOM_END_1;
+    case BOTTOM_END_1:
+    case BOTTOM_END_2:
+    case BOTTOM_END_3:
+    case BOTTOM_END_4: 
+      return reverseRotation ? RIGHT_END_1 : LEFT_END_1;
+    case LEFT_END_1:
+    case LEFT_END_2:
+    case LEFT_END_3:
+    case LEFT_END_4: 
+      return reverseRotation ? BOTTOM_END_1 : TOP_END_1;
+    case VOID:
+    case TILE_TYPE_MAX:
+      return dir;
   }
 
   return dir;
@@ -190,12 +311,24 @@ int main(void) {
     drawTile(cement, 100, item.x, item.y, item.dir);
 
     if (IsMouseButtonDown(MOUSE_LEFT_BUTTON)) {
+      // Append tile
       if (foundIndex == -1) {
         append(editorTiles, item);
-      } else {
+      }
+      // Replace old tile
+      else {
         editorTiles.items[foundIndex] = item;
       }
+
+      // Randomize next tile variation
       editorDir = changeTextureVariation(editorDir);
+    }
+    else if (IsMouseButtonDown(MOUSE_BUTTON_MIDDLE)) {
+      if (foundIndex != -1) {
+        editorDir = editorTiles.items[foundIndex].dir;
+      } else {
+        editorDir = VOID;
+      }
     }
 
     if (IsKeyPressed(KEY_P)) {
@@ -207,11 +340,14 @@ int main(void) {
       }
     }
 
+    else if (IsKeyPressed(KEY_R)) {
+      editorDir = rotateTile(editorDir, IsKeyDown(KEY_LEFT_SHIFT));
+    }
+
     else if (IsKeyPressed(KEY_ZERO))  editorDir = VOID;
     else if (IsKeyPressed(KEY_ONE))   editorDir = TOP_1;
-    else if (IsKeyPressed(KEY_TWO))   editorDir = RIGHT_1;
-    else if (IsKeyPressed(KEY_THREE)) editorDir = BOTTOM_1;
-    else if (IsKeyPressed(KEY_FOUR))  editorDir = LEFT_1;
+    else if (IsKeyPressed(KEY_TWO))  editorDir = HORIZONTAL_1;
+    else if (IsKeyPressed(KEY_THREE)) editorDir = TOP_END_1;
 
     EndDrawing();
   }
