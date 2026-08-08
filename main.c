@@ -311,9 +311,9 @@ int main(void) {
         sprintTime = 0.0f;
       }
       if (sprintTime > 0.1f) {
-        playerx -= 6;
+        playerx -= 2;
       }
-      playerx -= 3;
+      playerx -= 1;
       lastMovement = 1;
     }
     if (IsKeyDown(KEY_D)) {
@@ -324,9 +324,9 @@ int main(void) {
         sprintTime = 0.0f;
       }
       if (sprintTime > 0.1f) {
-        playerx += 6;
+        playerx += 2;
       }
-      playerx += 3;
+      playerx += 1;
       lastMovement = 2;
     }
     if (IsKeyUp(KEY_D) && IsKeyUp(KEY_A)){
