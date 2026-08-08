@@ -102,12 +102,6 @@ int main(void) {
       sprintTime = 0.0f;
     }
     if (IsKeyDown(KEY_A)) {
-      if (IsKeyUp(KEY_D)) {
-        lastMovement = 1;
-      }
-      else {
-        lastMovement = 0;
-      }
       if (lastMovement == 1 || lastMovement == 0) {
         sprintTime += GetFrameTime();
       }
@@ -115,17 +109,12 @@ int main(void) {
         sprintTime = 0.0f;
       }
       if (sprintTime > 0.1f) {
-        playerx -= 4;
+        playerx -= 6;
       }
-      playerx -= 2;
+      playerx -= 3;
+      lastMovement = 1;
     }
     if (IsKeyDown(KEY_D)) {
-      if (IsKeyUp(KEY_A)) {
-        lastMovement = 2;
-      }
-      else {
-        lastMovement = 0;
-      }
       if (lastMovement == 2 || lastMovement == 0) {
         sprintTime += GetFrameTime();
       }
@@ -133,9 +122,10 @@ int main(void) {
         sprintTime = 0.0f;
       }
       if (sprintTime > 0.1f) {
-        playerx += 4;
+        playerx += 6;
       }
-      playerx += 2;
+      playerx += 3;
+      lastMovement = 2;
     }
     if (IsKeyUp(KEY_D) && IsKeyUp(KEY_A)){
       lastMovement = 0;
