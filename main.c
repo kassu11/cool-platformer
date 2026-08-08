@@ -282,6 +282,8 @@ TileDirection rotateTile(TileDirection dir, bool reverseRotation) {
 int main(void) {
   const int screenWidth = 800;
   const int screenHeight = 450;
+  int playerx = 150, playery = 150, lastMovement = 0;
+  float sprintTime = 0.0f;
 
   InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
 
@@ -297,9 +299,44 @@ int main(void) {
   Tiles editorTiles = {0};
 
   while (!WindowShouldClose()) {
+
+    if (lastMovement == 0) {
+      sprintTime = 0.0f;
+    }
+    if (IsKeyDown(KEY_A)) {
+      if (lastMovement == 1 || lastMovement == 0) {
+        sprintTime += GetFrameTime();
+      }
+      else {
+        sprintTime = 0.0f;
+      }
+      if (sprintTime > 0.1f) {
+        playerx -= 6;
+      }
+      playerx -= 3;
+      lastMovement = 1;
+    }
+    if (IsKeyDown(KEY_D)) {
+      if (lastMovement == 2 || lastMovement == 0) {
+        sprintTime += GetFrameTime();
+      }
+      else {
+        sprintTime = 0.0f;
+      }
+      if (sprintTime > 0.1f) {
+        playerx += 6;
+      }
+      playerx += 3;
+      lastMovement = 2;
+    }
+    if (IsKeyUp(KEY_D) && IsKeyUp(KEY_A)){
+      lastMovement = 0;
+    }
     BeginDrawing();
 
     ClearBackground(RAYWHITE);
+
+    drawTile(cement, 255, playerx, playery, TOP_1);
 
     int x = GetMouseX() / TILE_SIZE * TILE_SIZE;
     int y = GetMouseY() / TILE_SIZE * TILE_SIZE;
