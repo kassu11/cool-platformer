@@ -12,6 +12,8 @@
 #define FOREACH_TILE_DIRECTION_TYPE(TILE_DIRECTION_TYPE) \
   TILE_DIRECTION_TYPE(VOID)                              \
                                                          \
+  TILE_DIRECTION_TYPE(BLOCK_1)                           \
+                                                         \
   TILE_DIRECTION_TYPE(TOP_1)                             \
   TILE_DIRECTION_TYPE(TOP_2)                             \
   TILE_DIRECTION_TYPE(TOP_3)                             \
@@ -74,7 +76,6 @@ const char* tile_direction_strings[] = {
 
 const int TILE_SIZE = 48;
 
-Texture2D tile_atlas;
 typedef struct {
   int x;
   int y;
@@ -119,7 +120,7 @@ void drawFromTileAtlas(Tile tile, int alpha, int x, int y, int dx, int dy) {
   Texture2D texture = tile.texture;
   Rectangle source = { .height = 8, .width = 8, .x = tile.x + dx * 8, .y = tile.y + dy * 8 };
   Rectangle destination = { .height = TILE_SIZE, .width = TILE_SIZE, .x = x, .y = y };
-  Vector2 origin = {.x = 0, .y = 0};
+  Vector2 origin = { .x = 0, .y = 0 };
   float rotation = 0;
   Color tint = { .r = 255, .g = 255, .b = 255, .a = alpha };
 
@@ -128,6 +129,8 @@ void drawFromTileAtlas(Tile tile, int alpha, int x, int y, int dx, int dy) {
 }
 
 void drawTile(Tile tile, int alpha, int x, int y, TileDirection dir) {
+
+  if (dir == BLOCK_1)       drawFromTileAtlas(tile, alpha, x, y, 0, 0);
 
   if (dir == TOP_1)         drawFromTileAtlas(tile, alpha, x, y, 0, 0);
   if (dir == TOP_2)         drawFromTileAtlas(tile, alpha, x, y, 1, 0);
@@ -269,6 +272,7 @@ TileDirection rotateTile(TileDirection dir, bool reverseRotation) {
       return reverseRotation ? BOTTOM_END_1 : TOP_END_1;
     case VOID:
     case TILE_TYPE_MAX:
+    case BLOCK_1: 
       return dir;
   }
 
@@ -281,10 +285,13 @@ int main(void) {
 
   InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
 
-  SetTargetFPS(60);
+  SetTargetFPS(500);
 
-  tile_atlas = loadTexture("textures/tile-atlas.png");
+  Texture2D tile_atlas = loadTexture("textures/tile-atlas.png");
   Tile cement = ((Tile){.x = 16, .y = 16, .texture = tile_atlas });
+
+  Texture2D block_1 = loadTexture("textures/block-1.png");
+  Tile customTiles = ((Tile){.x = 0, .y = 0, .texture = block_1 });
 
   TileDirection editorDir = TOP_1;
   Tiles editorTiles = {0};
@@ -304,11 +311,11 @@ int main(void) {
       if (item.x == info.x && item.y == info.y) {
         foundIndex = i;
       } else {
-        drawTile(cement, 255, info.x, info.y, info.dir);
+        drawTile(customTiles, 255, info.x, info.y, info.dir);
       }
     }
 
-    drawTile(cement, 100, item.x, item.y, item.dir);
+    drawTile(customTiles, 100, item.x, item.y, item.dir);
 
     if (IsMouseButtonDown(MOUSE_LEFT_BUTTON)) {
       // Append tile
@@ -335,7 +342,7 @@ int main(void) {
       for (int i = 0; i < editorTiles.count; i++) {
         TileInfo info = editorTiles.items[i];
         if (info.dir != VOID) {
-          printf("drawTile(cement, 255, %d, %d, %s);\n", info.x, info.y, tile_direction_strings[info.dir]);
+          printf("drawTile(customTiles, 255, %d, %d, %s);\n", info.x, info.y, tile_direction_strings[info.dir]);
         }
       }
     }
